@@ -34,32 +34,19 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($barangs as $barang)
+                                @foreach ($barangs as $b)
                                 <tr>
-                                    <td class="text-center">
-                                        <img src="{{ asset('/storage/barangs/'.$barang->foto) }}" class="rounded"
-                                            style="width: 150px">
-                                    </td>
-                                    <td>{{ $barang->nama_barang }}</td>
-                                    <td>{!! $barang->id_kategori !!}</td>
-                                    <td class="text-center">
-                                        <form onsubmit="return confirm('Apakah Anda Yakin ?');"
-                                            action="{{ route('barangs.destroy', $barang->id) }}" method="POST">
-                                            <a href="{{ route('barangs.show', $barang->id) }}"
-                                                class="btn btn-sm btn-dark">SHOW</a>
-                                            <a href="{{ route('barangs.edit', $barang->id) }}"
-                                                class="btn btn-sm btn-primary">EDIT</a>
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger">HAPUS</button>
-                                        </form>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $b->nama_barang }}</td>
+                                    <td>{{ $b->kategori }}</td>
+                                    <td>{{ $b->harga }}</td>
+                                    <td>{{ $b->foto }}</td>
+                                    <td>
+                                        <a href="" class="btn btn-primary"><i class="fas fa-pen">Edit</i></a>
+                                        <a href="" class="btn btn-danger"><i class="fas fa-trash-alt">Hapus</i></a>
                                     </td>
                                 </tr>
-                                @empty
-                                <div class="alert alert-danger">
-                                    Data barang belum Tersedia.
-                                </div>
-                                @endforelse
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
