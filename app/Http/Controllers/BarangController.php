@@ -13,7 +13,7 @@ class BarangController extends Controller
 
         $data = Barang::get();
 
-        return view('barang', compact('data'));
+        return view('barangs', compact('data'));
     }
 
     public function create(){

@@ -34,7 +34,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($barangs as $b)
+                                @foreach ($data as $b)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $b->nama_barang }}</td>
