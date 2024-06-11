@@ -47,7 +47,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">Kategori</label>
-                                        <input type="text" class="form-control" name="kategori" id="exampleInputEmail1"
+                                        <input type="text" class="form-control" name="id_kategori" id="exampleInputEmail1"
                                             placeholder="Enter kategori">
                                         @error('kategori')
                                         <small color="red"> {{ $message }} </small>
@@ -69,14 +69,7 @@
                                         <small color="red"> {{ $message }} </small>
                                         @enderror
                                     </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Stok</label>
-                                        <input type="text" class="form-control" name="stok" id="exampleInputEmail1"
-                                            placeholder="Enter stok">
-                                        @error('stok')
-                                        <small color="red"> {{ $message }} </small>
-                                        @enderror
-                                    </div>
+
 
                                     {{-- <div class="form-group">
                                         <label for="exampleInputFile">File input</label>

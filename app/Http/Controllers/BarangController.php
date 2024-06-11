@@ -24,20 +24,18 @@ class BarangController extends Controller
        // dd($request->all());
        $validator = Validator::make($request->all(),[
             'nama_barang' => 'required',
-            'kategori'  => 'required',
+            'id_kategori'  => 'required',
             'harga' => 'required',
             'foto' => 'required',
-            'stok' => 'required',
 
        ]);
 
        if($validator->fails()) return redirect()->back()->withInput()->withErrors($validator);
 
        $data['nama_barang']     =  $request->nama_barang;
-       $data['kategori']      =  $request->kategori;
+       $data['id_kategori']      =  $request->id_kategori;
        $data['harga']  =  $request->harga;
        $data['foto']  =  $request->foto;
-       $data['stok']  =  $request->stok;
 
        Barang::create($data);
 
