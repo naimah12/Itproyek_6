@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BarangController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,10 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::resource('/barangs',\App\Http\Controllers\BarangController::class);
- 
+Route::get('/',[BarangController::class, 'index']);
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+
+// Routes Barang
+Route::get('/daftar_barang', [BarangController::class, 'index'])->name('barang.index');
+Route::get('/createBarang', [BarangController::class, 'create'])->name('barang.create');
+Route::post('/store', [BarangController::class, 'store'])->name('barang.store');
