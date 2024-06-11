@@ -1,88 +1,90 @@
-@extends('layout.main')
+<!DOCTYPE html>
+<html lang="en">
 
-@section('content')
-<div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0">Dashboard</h1>
-                </div><!-- /.col -->
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Dashboard v1</li>
-                    </ol>
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Data Barang - Tes</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+</head>
 
-    <!-- Main content -->
-    <section class="content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <a href="{{ route('barang.create') }}" class="btn btn-success mb-3">Tambah Data</a>
+<body style="background: lightgray">
 
-                    <div class="card">
-                        <div class="card-header">
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12">
+                <div>
+                    <h3 class="text-center my-4">TES MUNCULIN BARANG</h3>
+                    <hr>
+                </div>
+                <div class="card border-0 shadow-sm rounded">
+                    <div class="card-body">
+                        <a href="{{ route('barangs.create') }}" class="btn btn-md btn-success mb-3">TAMBAH BARANG</a>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">No Barang</th>
+                                    <th scope="col">Nama Barang</th>
+                                    <th scope="col">No Kategori</th>
+                                    <th scope="col">Harga</th>
+                                    <th scope="col">Gambar</th>
 
-                            <h3 class="card-title">Daftar Barang</h3>
-
-                            <div class="card-tools">
-                                <div class="input-group input-group-sm" style="width: 150px;">
-                                    <input type="text" name="table_search" class="form-control float-right"
-                                        placeholder="Search">
-
-                                    <div class="input-group-append">
-                                        <button type="submit" class="btn btn-default">
-                                            <i class="fas fa-search"></i>
-                                        </button>
-                                    </div>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($barangs as $barang)
+                                <tr>
+                                    <td class="text-center">
+                                        <img src="{{ asset('/storage/barangs/'.$barang->foto) }}" class="rounded"
+                                            style="width: 150px">
+                                    </td>
+                                    <td>{{ $barang->nama_barang }}</td>
+                                    <td>{!! $barang->id_kategori !!}</td>
+                                    <td class="text-center">
+                                        <form onsubmit="return confirm('Apakah Anda Yakin ?');"
+                                            action="{{ route('barangs.destroy', $barang->id) }}" method="POST">
+                                            <a href="{{ route('barangs.show', $barang->id) }}"
+                                                class="btn btn-sm btn-dark">SHOW</a>
+                                            <a href="{{ route('barangs.edit', $barang->id) }}"
+                                                class="btn btn-sm btn-primary">EDIT</a>
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-danger">HAPUS</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                @empty
+                                <div class="alert alert-danger">
+                                    Data barang belum Tersedia.
                                 </div>
-                            </div>
-                        </div>
-                        <!-- /.card-header -->
-                        <div class="card-body table-responsive p-0">
-                            <table class="table table-hover text-nowrap">
-                                <thead>
-                                    <tr>
-                                        <th>NO</th>
-                                        <th>Nama Barang</th>
-                                        <th>Kategori</th>
-                                        <th>Harga</th>
-                                        <th>Gambar</th>
-                                        <th>Stok</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($data as $d)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $d->nama_barang }}</td>
-                                        <td>{{ $d->kategori }}</td>
-                                        <td>{{ $d->harga }}</td>
-                                        <td>{{ $d->foto }}</td>
-                                        <td>{{ $d->stok }}</td>
-                                        <td>
-                                            <a href="" class="btn btn-primary"><i class="fas fa-pen">Edit</i></a>
-                                            <a href="" class="btn btn-danger"><i class="fas fa-trash-alt">Hapus</i></a>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- /.card-body -->
+                                @endforelse
+                            </tbody>
+                        </table>
                     </div>
-                    <!-- /.card -->
                 </div>
             </div>
-        </div><!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
-</div>
-@endsection
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script>
+        //message with toastr
+        @if(session()->has('success'))
+        
+            toastr.success('{{ session('success') }}', 'BERHASIL!'); 
+
+        @elseif(session()->has('error'))
+
+            toastr.error('{{ session('error') }}', 'GAGAL!'); 
+            
+        @endif
+    </script>
+
+</body>
+
+</html>

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->bigIncrements('id_barang');
             $table->string('nama_barang', 30);
             $table->unsignedBigInteger('id_kategori');
-            $table->integer('harga');
+            $table->decimal('harga', 8, 2);
             $table->string('foto', 80);
             $table->timestamps();
         });
