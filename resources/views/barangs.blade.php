@@ -66,7 +66,7 @@
                                         <td>{{ $d->harga }}</td>
                                         <td>{{ $d->foto }}</td>
                                         <td>
-                                            <a href="" class="btn btn-primary"><i class="fas fa-pen">Edit</i></a>
+                                            <a href="{{ route ('barang.edit',['id_barang'=> $d->id_barang]) }}" class="btn btn-primary"><i class="fas fa-pen">Edit</i></a>
                                             <a href="" class="btn btn-danger"><i class="fas fa-trash-alt">Hapus</i></a>
                                         </td>
                                     </tr>

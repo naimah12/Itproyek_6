@@ -41,4 +41,35 @@ class BarangController extends Controller
 
        return redirect()->route('barang.index');
     }
+
+    public function edit(Request $request, $id_barang){
+        $data = Barang::find($id_barang);
+
+        return view('editBarang', compact('data'));
+        
+    }
+
+    public function update (Request $request, $id_barang){
+
+      // dd($request->all());
+      $validator = Validator::make($request->all(),[
+        'nama_barang' => 'required',
+        'id_kategori'  => 'required',
+        'harga' => 'required',
+        'foto' => 'required',
+
+        ]);
+
+        if($validator->fails()) return redirect()->back()->withInput()->withErrors($validator);
+
+        $data['nama_barang']     =  $request->nama_barang;
+        $data['id_kategori']      =  $request->id_kategori;
+        $data['harga']  =  $request->harga;
+        $data['foto']  =  $request->foto;
+
+        Barang::whereId($id_barang)->update($data);
+
+        return redirect()->route('barang.index');
+    
+    }
 }
