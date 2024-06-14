@@ -52,9 +52,9 @@ class BarangController extends Controller
     public function update (Request $request, $id_barang){
 
       // dd($request->all());
-      $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(),[
         'nama_barang' => 'required',
-        'id_kategori'  => 'required',
+        'id_kategori'  => 'nullable',
         'harga' => 'required',
         'foto' => 'required',
 
@@ -67,7 +67,7 @@ class BarangController extends Controller
         $data['harga']  =  $request->harga;
         $data['foto']  =  $request->foto;
 
-        Barang::whereId($id_barang)->update($data);
+        Barang::where('id_barang', $id_barang)->update($data);
 
         return redirect()->route('barang.index');
     
