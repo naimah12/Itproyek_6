@@ -6,6 +6,7 @@ use App\Models\Barang;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use PhpParser\Node\Expr\FuncCall;
 
 class BarangController extends Controller
 {
@@ -24,7 +25,7 @@ class BarangController extends Controller
        // dd($request->all());
        $validator = Validator::make($request->all(),[
             'nama_barang' => 'required',
-            'id_kategori'  => 'required',
+            'id_kategori'  => 'nullable',
             'harga' => 'required',
             'foto' => 'required',
 
@@ -71,5 +72,14 @@ class BarangController extends Controller
 
         return redirect()->route('barang.index');
     
+    }
+
+    public function delete (Request $request, $id_barang){
+        $data = Barang::find($id_barang);
+
+        if ($data){
+            $data->delete();
+        }
+        return redirect()->route('barang.index');
     }
 }

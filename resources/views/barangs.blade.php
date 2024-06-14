@@ -67,9 +67,36 @@
                                         <td>{{ $d->foto }}</td>
                                         <td>
                                             <a href="{{ route ('barang.edit',['id_barang'=> $d->id_barang]) }}" class="btn btn-primary"><i class="fas fa-pen">Edit</i></a>
-                                            <a href="" class="btn btn-danger"><i class="fas fa-trash-alt">Hapus</i></a>
+                                            <a data-toggle="modal" data-target="#modal-hapus{{ $d->id_barang }}" class="btn btn-danger"><i class="fas fa-trash-alt">Hapus</i></a>
                                         </td>
                                     </tr>
+                                    <div class="modal fade" id="modal-hapus{{ $d->id_barang }}">
+                                        <div class="modal-dialog">
+                                          <div class="modal-content">
+                                            <div class="modal-header">
+                                              <h4 class="modal-title">Konfirmasi hapus data barang</h4>
+                                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                              </button>
+                                            </div>
+                                            <div class="modal-body">
+                                              <p>Apakah yakin mengapus data barang <b> {{ $d->nama_barang }}</p>
+                                            </div>
+                                            <div class="modal-footer justify-content-between">
+                                                <form action="{{ route('barang.delete',['id_barang'=> $d->id_barang]) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancle</button>
+                                                    <button type="submit" class="btn btn-primary">Yes</button>
+                                                </form>
+                                              
+                                            </div>
+                                          </div>
+                                          <!-- /.modal-content -->
+                                        </div>
+                                        <!-- /.modal-dialog -->
+                                      </div>
+                                      <!-- /.modal -->
                                     @endforeach
                                 </tbody>
                             </table>

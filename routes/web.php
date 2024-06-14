@@ -21,3 +21,6 @@ Route::post('/store', [BarangController::class, 'store'])->name('barang.store');
 
 Route::get('/editBarang/{id_barang}', [BarangController::class, 'edit'])->name('barang.edit');
 Route::put('/update/{id_barang}', [BarangController::class, 'update'])->name('barang.update');
+
+Route::delete('/delete/{id_barang}', [BarangController::class, 'delete'])->name('barang.delete');
+
