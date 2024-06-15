@@ -48,10 +48,13 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">Kategori</label>
-                                        <input type="text" class="form-control" name="id_kategori" value="{{$data->id_kategori}}" id="exampleInputEmail1"
-                                            placeholder="Enter kategori">
-                                        @error('kategori')
-                                        <small color="red"> {{ $message }} </small>
+                                        <select class="form-control" name="id_kategori">
+                                            @foreach($kategoris as $kategori)
+                                                <option value="{{ $kategori->id_kategori }}">{{ $kategori->nama_kategori }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('id_kategori')
+                                        <small style="color: red;"> {{ $message }} </small>
                                         @enderror
                                     </div>
                                     <div class="form-group">

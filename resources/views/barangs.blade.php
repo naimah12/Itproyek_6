@@ -62,7 +62,7 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $d->nama_barang }}</td>
-                                        <td>{{ $d->id_kategori }}</td>
+                                        <td>{{ $d->kategori->nama_kategori ?? 'Tidak ada kategori' }}</td>
                                         <td>{{ $d->harga }}</td>
                                         <td>{{ $d->foto }}</td>
                                         <td>

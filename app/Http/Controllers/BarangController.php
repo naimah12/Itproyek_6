@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barang;
-
+use App\Models\Kategori; 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use PhpParser\Node\Expr\FuncCall;
@@ -12,20 +12,21 @@ class BarangController extends Controller
 {
     public function index(){
 
-        $data = Barang::get();
-
+        $data = Barang::with('kategori')->get();
         return view('barangs', compact('data'));
     }
 
     public function create(){
-        return view('createBarang');
+
+        $kategoris = Kategori::all();
+        return view('createBarang', compact('kategoris'));
     }
 
     public function store(Request $request){
        // dd($request->all());
        $validator = Validator::make($request->all(),[
             'nama_barang' => 'required',
-            'id_kategori'  => 'nullable',
+            'id_kategori'  => 'required|exists:kategoris,id_kategori',
             'harga' => 'required',
             'foto' => 'required',
 
@@ -38,15 +39,15 @@ class BarangController extends Controller
        $data['harga']  =  $request->harga;
        $data['foto']  =  $request->foto;
 
-       Barang::create($data);
+       Barang::create($request->all());
 
        return redirect()->route('barang.index');
     }
 
     public function edit(Request $request, $id_barang){
         $data = Barang::find($id_barang);
-
-        return view('editBarang', compact('data'));
+        $kategoris = Kategori::all(); // Ambil juga kategori
+        return view('editBarang', compact('data', 'kategoris'));
         
     }
 
@@ -55,7 +56,7 @@ class BarangController extends Controller
       // dd($request->all());
         $validator = Validator::make($request->all(),[
         'nama_barang' => 'required',
-        'id_kategori'  => 'nullable',
+        'id_kategori' => 'required|exists:kategoris,id_kategori',
         'harga' => 'required',
         'foto' => 'required',
 
@@ -68,7 +69,8 @@ class BarangController extends Controller
         $data['harga']  =  $request->harga;
         $data['foto']  =  $request->foto;
 
-        Barang::where('id_barang', $id_barang)->update($data);
+        $barang = Barang::find($id_barang);
+        $barang->update($request->all());
 
         return redirect()->route('barang.index');
     
