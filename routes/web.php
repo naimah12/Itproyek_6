@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\Detail_transaksiController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\TransaksiController;
 use App\Models\Kategori;
 use Illuminate\Support\Facades\Route;
 
@@ -15,6 +17,9 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('/', [BarangController::class, 'index'])->name('barang.index');
+
 
 //Barang
 Route::get('/barangs', [BarangController::class, 'index'])->name('barang.index');
@@ -39,3 +44,9 @@ Route::get('/editKategori/{id_kategori}', [KategoriController::class, 'edit'])->
 Route::put('/updateKategori/{id_kategori}', [KategoriController::class, 'update'])->name('kategori.update');
 
 Route::delete('/deleteKategori/{id_kategori}', [KategoriController::class, 'delete'])->name('kategori.delete');
+
+
+// Detail Transaksi
+Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
+Route::get('/daftar_transaksi', [TransaksiController::class, 'daftar'])->name('transaksi.daftar');
+Route::post('/transaksis', [TransaksiController::class, 'store'])->name('transaksi.store');

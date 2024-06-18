@@ -14,11 +14,11 @@ class KategoriController extends Controller
        
         $data = Kategori::get();
 
-        return view('kategoris', compact('data'));
+        return view('Kategori/kategoris', compact('data'));
     }
 
     public function create(){
-        return view('createKategori');
+        return view('Kategori/createKategori');
     }
 
     public function store(Request $request){
@@ -39,7 +39,7 @@ class KategoriController extends Controller
     public function edit(Request $request, $id_kategori){
         $data = Kategori::find($id_kategori);
 
-        return view('editKategori', compact('data'));
+        return view('Kategori/editKategori', compact('data'));
         
     }
 
