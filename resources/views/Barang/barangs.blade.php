@@ -63,7 +63,7 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $d->nama_barang }}</td>
                                         <td>{{ $d->kategori->nama_kategori ?? 'Tidak ada kategori' }}</td>
-                                        <td>{{ $d->harga }}</td>
+                                        <td>Rp {{ number_format($d->harga, 0, ',', '.') }}</td>
                                         <td><img width="100" src="{{ asset('storage/foto-barang/'.$d->foto) }}" alt=""></td>
                                         <td>
                                             <a href="{{ route ('barang.edit',['id_barang'=> $d->id_barang]) }}" class="btn btn-primary"><i class="fas fa-pen">Edit</i></a>

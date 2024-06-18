@@ -2,82 +2,83 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 use App\Models\Transaksi;
-use App\Models\DetailTransaksi;
 use App\Models\Barang;
-
-use Illuminate\Support\Facades\Log;
-
+use App\Models\DetailTransaksi;
+use Illuminate\Http\Request;
 
 class TransaksiController extends Controller
 {
     public function index()
     {
-        $dataBarang = Barang::get();
-
-        return view('Transaksi/transaksi', compact('dataBarang'));
+        $transaksis = Transaksi::orderByDesc('tanggal')->get();
+        return view('Transaksi/daftar_transaksi', compact('transaksis'));
     }
 
-    public function daftar()
+    public function create()
     {
-        // Mengambil semua transaksi dari database
-        $transaksis = Transaksi::all();
-
-        // Mengirimkan data transaksi ke view
-        return view('Transaksi/daftar_transaksi', [
-            'transaksis' => $transaksis
-        ]);
+        $dataBarang = Barang::get();
+        return view('Transaksi/transaksi_create', compact('dataBarang'));
     }
 
     public function store(Request $request)
     {
-        // Validasi request
+        //dd($request->all());
+        // Validasi data yang diterima dari form
         $request->validate([
-            'details' => 'required|array',
-            'details.*.id' => 'required|integer',
-            'details.*.nama' => 'required|string',
-            'details.*.harga_satuan' => 'required|numeric',
-            'details.*.jumlah' => 'required|integer|min:1',
-            'uang_bayar' => 'required|numeric|min:0',
+            'total_barang' => 'required|integer|min:1',
+            'grand_total' => 'required|numeric|min:0',
+            'daftar_barang' => 'required|array|min:1',
+            'harga_bayar' => 'required|numeric|min:0',
+            'harga_kembali' => 'required|numeric|min:0',
+            'tanggal' => 'required|date',
         ]);
 
-        try {
-            // Hitung grand total
-            $grandTotal = 0;
-            foreach ($request->details as $detail) {
-                $subtotal = $detail['harga_satuan'] * $detail['jumlah'];
-                $grandTotal += $subtotal;
-            }
+        // Ubah format grand_total dan harga_kembali dari string ke numeric
+        $grandTotalNumeric = preg_replace("/[^0-9]/", "", $request->grand_total);
+        $hargaKembaliNumeric = preg_replace("/[^0-9]/", "", $request->harga_kembali);
 
-            // Simpan transaksi
-            $transaksi = Transaksi::create([
-                'total_barang' => count($request->details),
-                'grand_total' => $grandTotal,
-                'uang_bayar' => $request->uang_bayar,
-                'uang_kembali' => $request->uang_bayar - $grandTotal,
-            ]);
 
-            // Simpan detail transaksi
-            foreach ($request->details as $detail) {
-                DetailTransaksi::create([
-                    'transaksi_id' => $transaksi->id,
-                    'barang_id' => $detail['id'],
-                    'jumlah' => $detail['jumlah'],
-                    'harga_satuan' => $detail['harga_satuan'],
-                ]);
-            }
+        // Simpan data ke tabel transaksis
+        $transaksi = new Transaksi();
+        $transaksi->total_barang = $request->total_barang;
+        $transaksi->grand_total = $grandTotalNumeric;
+        $transaksi->tanggal = $request->tanggal;
+        $transaksi->harga_bayar = $request->harga_bayar;
+        $transaksi->harga_kembali = $hargaKembaliNumeric;
+        $transaksi->save();
 
-            // Berhasil, redirect ke daftar transaksi
-            return redirect()->route('daftar_transaksi')->with('success', 'Transaksi berhasil disimpan');
-        } catch (\Exception $e) {
-            // Tangkap error
-            Log::error('Error while storing transaction: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Gagal menyimpan transaksi: ' . $e->getMessage());
+
+        // proses menyimpan detail_transaksi
+        foreach ($request->daftar_barang as $barang) {
+        $detailTransaksi = new DetailTransaksi();
+        $detailTransaksi->id_transaksi = $transaksi->id; // Ambil id_transaksi dari transaksi yang baru dibuat
+        $detailTransaksi->barang_id = $barang['id'];
+        $detailTransaksi->jumlah_barang = $barang['jumlah'];
+        $detailTransaksi->sub_total = $barang['sub_total'];
+        $detailTransaksi->save();
         }
+
+
+        // Redirect ke halaman daftar_transaksi
+        return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil disimpan.');
     }
-    
-    
-    
+
+    public function delete($id)
+    {
+        // Temukan transaksi berdasarkan ID
+        $transaksi = Transaksi::findOrFail($id);
+
+        // Hapus transaksi
+        $transaksi->delete();
+
+        // Redirect ke halaman daftar transaksi atau halaman lain yang sesuai
+        return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil dihapus.');
+    }
+
+    public function show($id)
+    {
+        $transaksi = Transaksi::with('detailTransaksis.barang')->findOrFail($id);
+        return view('Transaksi/detail_transaksi', compact('transaksi'));
+    }
 }

@@ -241,7 +241,7 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="{{ route('transaksi.index') }}" class="nav-link">
                                 <i class="nav-icon fas fa-layer-group"></i>
                                 <p>
@@ -249,9 +249,9 @@
                                     <span class="badge badge-info right">2</span>
                                 </p>
                             </a>
-                        </li>
+                        </li> --}}
                         <li class="nav-item">
-                            <a href="{{ route('transaksi.daftar') }}" class="nav-link">
+                            <a href="{{ route('transaksi.index') }}" class="nav-link">
                                 <i class="nav-icon fas fa-layer-group"></i>
                                 <p>
                                     Daftar Transkasi

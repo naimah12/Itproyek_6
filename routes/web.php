@@ -48,5 +48,7 @@ Route::delete('/deleteKategori/{id_kategori}', [KategoriController::class, 'dele
 
 // Detail Transaksi
 Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
-Route::get('/daftar_transaksi', [TransaksiController::class, 'daftar'])->name('transaksi.daftar');
-Route::post('/transaksis', [TransaksiController::class, 'store'])->name('transaksi.store');
+Route::get('/create_transaksi', [TransaksiController::class, 'create'])->name('transaksi.create');
+Route::post('/trans_store', [TransaksiController::class, 'store'])->name('transaksi.store');
+Route::delete('transaksi/{id}', [TransaksiController::class, 'delete'])->name('transaksi.delete');
+Route::get('/transaksi/{id}', [TransaksiController::class, 'show'])->name('transaksi.show');

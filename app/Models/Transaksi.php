@@ -9,10 +9,13 @@ class Transaksi extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['total_barang', 'grand_total', 'uang_bayar', 'uang_kembali'];
+    protected $table = 'transaksi';
+    
+    protected $fillable = ['tanggal', 'harga_bayar', 'harga_kembali', 'grand_total', 'total_barang'];
 
-    public function details()
+    // Relasi ke model DetailTransaksi
+    public function detailTransaksis()
     {
-        return $this->hasMany(DetailTransaksi::class);
+        return $this->hasMany(DetailTransaksi::class, 'id_transaksi', 'id');
     }
 }

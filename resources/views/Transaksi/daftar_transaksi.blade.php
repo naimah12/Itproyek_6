@@ -11,20 +11,38 @@
                             <h3 class="card-title">Daftar Transaksi</h3>
                         </div>
                         <div class="card-body">
-                            <table class="table table-bordered">
+                            <div class="mb-3">
+                                <a href="{{ route('transaksi.create') }}" class="btn btn-primary">Tambah Transaksi</a>
+                            </div>
+
+                            <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>Tanggal Transaksi</th>
+                                        <th>No</th>
+                                        <th>Tanggal</th>
                                         <th>Total Barang</th>
                                         <th>Grand Total</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($transaksis as $transaksi)
+                                    @foreach($transaksis as $transaksi)
                                     <tr>
-                                        <td>{{ $transaksi->created_at->format('d M Y H:i:s') }}</td>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($transaksi->tanggal)->translatedFormat('l, j F Y') }}</td>
                                         <td>{{ $transaksi->total_barang }}</td>
-                                        <td>{{ $transaksi->grand_total }}</td>
+                                        <td>Rp {{ number_format($transaksi->grand_total, 0, ',', '.') }}</td>
+                                        <td>
+                                            <a href="{{ route('transaksi.show', $transaksi->id) }}"
+                                                class="btn btn-sm btn-info">Detail</a>
+                                            <form action="{{ route('transaksi.delete', $transaksi->id) }}"
+                                                method="POST" style="display: inline-block;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-danger"
+                                                    onclick="return confirm('Apakah Anda yakin ingin menghapus transaksi ini?')">Hapus</button>
+                                            </form>
+                                        </td>
                                     </tr>
                                     @endforeach
                                 </tbody>
